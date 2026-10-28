@@ -1,0 +1,20 @@
+/* ===== Variables: paleta y tipografías ===== */
+:root {
+  --fondo: #F4E7F8;
+  --blanco: #FFFFFF;
+  --suave: #F2DDDC;
+  --primario: #7C5CBF;
+  --primario-hover: #6446A8;
+  --lila: #C8A8E9;
+  --orquidea: #E3AADD;
+  --durazno: #F6BCBA;
+  --periwinkle: #C3C7F4;
+  --borde: #E9DDF2;
+  --texto: #3B2A55;
+  --texto-2: #6B5C80;
+ 
+  --fuente-titulos: 'Poppins', sans-serif;
+  --fuente-texto: 'Inter', sans-serif;
+ 
+}
+ 
