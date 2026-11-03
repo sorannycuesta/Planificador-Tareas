@@ -12,9 +12,532 @@
   --borde: #E9DDF2;
   --texto: #3B2A55;
   --texto-2: #6B5C80;
- 
+
   --fuente-titulos: 'Poppins', sans-serif;
   --fuente-texto: 'Inter', sans-serif;
- 
+
+  /* Ajustes de Bootstrap */
+  --bs-body-font-family: var(--fuente-texto);
+  --bs-body-font-size: 0.875rem;
+  --bs-body-color: var(--texto);
+  --bs-body-bg: var(--fondo);
+  --bs-border-color: var(--borde);
+  --bs-link-color: var(--primario);
 }
- 
+
+body {
+  background: var(--fondo);
+}
+
+/* ===== Textos ===== */
+.texto-suave {
+  color: var(--texto-2);
+}
+
+.saludo {
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+  font-size: 1.75rem;
+  line-height: 2.25rem;
+}
+
+.titulo-seccion {
+  font-family: var(--fuente-titulos);
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.titulo-pequeno {
+  font-family: var(--fuente-titulos);
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+/* ===== Barra lateral ===== */
+.sidebar {
+  background: var(--blanco);
+  border-right: 1px solid var(--borde);
+}
+
+@media (min-width: 992px) {
+  .sidebar {
+    width: 240px;
+    flex: none;
+    min-height: 100vh;
+  }
+}
+
+.sidebar {
+  --bs-offcanvas-width: 260px;
+}
+
+.logo-icono {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--primario);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.logo-texto {
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.logo-img {
+  height: 36px;
+  width: auto;
+  border-radius: 10px;
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: var(--texto);
+  font-weight: 500;
+}
+
+.sidebar .nav-link i {
+  font-size: 1.1rem;
+}
+
+.sidebar .nav-link:hover {
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+.sidebar .nav-link.active {
+  background: var(--primario);
+  color: #fff;
+}
+
+.sidebar .colapsar {
+  color: var(--texto-2);
+}
+
+/* ===== Encabezado ===== */
+.buscador {
+  position: relative;
+  max-width: 460px;
+}
+
+.buscador i {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--texto-2);
+}
+
+.buscador .form-control {
+  height: 44px;
+  padding-left: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--borde);
+  background: var(--blanco);
+  color: var(--texto);
+}
+
+.buscador .form-control::placeholder {
+  color: var(--texto-2);
+}
+
+.btn-icono {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: var(--texto-2);
+}
+
+.btn-icono:hover {
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+header .btn-icono {
+  background: var(--blanco);
+}
+
+.perfil {
+  background: var(--blanco);
+  border-radius: 999px;
+  padding: 4px 16px 4px 4px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--lila);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+}
+
+/* ===== Botones ===== */
+.btn-primario {
+  height: 44px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--primario);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-primario:hover,
+.btn-primario:focus-visible {
+  background: var(--primario-hover);
+  color: #fff;
+}
+
+.btn-borde {
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  color: var(--texto);
+  font-weight: 500;
+}
+
+.btn-borde:hover {
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+/* ===== Cards ===== */
+.card {
+  border: 0;
+  border-radius: 16px;
+  background: var(--blanco);
+  box-shadow: 0 8px 24px rgba(124, 92, 191, .08);
+}
+
+/* Cards de resumen */
+.resumen-total {
+  background: #EFE4F9;
+}
+
+.resumen-completadas {
+  background: #E4F4EC;
+}
+
+.resumen-progreso {
+  background: #FCF3DA;
+}
+
+.resumen-porhacer {
+  background: #E7E9FA;
+}
+
+.icono-resumen {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  font-size: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resumen-total .icono-resumen {
+  background: var(--lila);
+}
+
+.resumen-completadas .icono-resumen {
+  background: #BFE5CF;
+  color: #1F5E40;
+}
+
+.resumen-progreso .icono-resumen {
+  background: #F9E2A8;
+  color: #6E4E0C;
+}
+
+.resumen-porhacer .icono-resumen {
+  background: var(--periwinkle);
+}
+
+.numero {
+  font-family: var(--fuente-titulos);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 2.5rem;
+  margin-top: 12px;
+}
+
+/* ===== Filtros (pestañas) ===== */
+.filtros .nav-link {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 999px;
+  color: var(--texto-2);
+  font-weight: 500;
+}
+
+.filtros .nav-link.active {
+  background: #EFE4F9;
+  color: #5A3FA0;
+  font-weight: 600;
+}
+
+/* ===== Ventana (modal) y formulario ===== */
+.modal-content {
+  border: 0;
+  border-radius: 16px;
+}
+
+.modal-header,
+.modal-footer {
+  border-color: var(--borde);
+}
+
+.form-label {
+  color: var(--texto);
+}
+
+.form-control,
+.form-select {
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  background-color: var(--blanco);
+  color: var(--texto);
+}
+
+.form-control,
+.form-select {
+  min-height: 44px;
+}
+
+.form-control::placeholder {
+  color: var(--texto-2);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--primario);
+  box-shadow: 0 0 0 .25rem rgba(124, 92, 191, .25);
+}
+
+/* ===== Tarjeta de Tarea y lista ===== */
+.tarjeta-tarea {
+  border: 1px solid var(--borde);
+  box-shadow: none;
+}
+
+.tarjeta-tarea:hover {
+  border-color: var(--lila);
+}
+
+.tarea-titulo {
+  margin-bottom: 4px;
+}
+
+.tarjeta-tarea.completada .tarea-titulo {
+  color: var(--texto-2);
+  text-decoration: line-through;
+}
+
+.btn-icono-sm {
+  width: 32px;
+  height: 32px;
+  margin: -4px -8px 0 0;
+}
+
+.tarea-fecha {
+  color: var(--texto-2);
+  font-size: .75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Estado de la tarea */
+.estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: .75rem;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.estado-porhacer {
+  background: #E7E9FA;
+  color: #2E3478;
+}
+
+.estado-progreso {
+  background: #FCF3DA;
+  color: #6E4E0C;
+}
+
+.estado-cerrado {
+  background: #D4EEE0;
+  color: #1F5E40;
+}
+
+/* Etiquetas de categoría */
+.etiqueta,
+.prioridad {
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: .75rem;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.etiqueta-website {
+  background: #E6D9F7;
+  color: #4A2F7A;
+}
+
+.etiqueta-diseno {
+  background: #D4EEE0;
+  color: #1F5E40;
+}
+
+.etiqueta-app {
+  background: #DADDF8;
+  color: #2E3478;
+}
+
+.etiqueta-branding {
+  background: #F7DDF3;
+  color: #7A2A70;
+}
+
+/* Prioridades */
+.prio-alta {
+  background: var(--durazno);
+  color: #8F2634;
+}
+
+.prio-media {
+  background: #F9E2A8;
+  color: #6E4E0C;
+}
+
+.prio-baja {
+  background: #BFE5CF;
+  color: #1F5E40;
+}
+
+/* Leyenda de la dona */
+.leyenda li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+}
+
+.leyenda strong {
+  margin-left: auto;
+}
+
+.punto {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.punto-alta {
+  background: #F08A94;
+}
+
+.punto-media {
+  background: #F5CB66;
+}
+
+.punto-baja {
+  background: #7FCBA0;
+}
+
+/* ===== Calendario ===== */
+.calendario {
+  --bs-table-bg: transparent;
+  font-size: .75rem;
+}
+
+.calendario th {
+  color: var(--texto-2);
+  font-weight: 500;
+}
+
+.calendario td,
+.calendario th {
+  padding: 4px 0;
+}
+
+.hoy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primario);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ===== Progreso ===== */
+.porcentaje {
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+}
+
+.progress {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--borde);
+}
+
+.progreso-42 {
+  width: 42%;
+}
+
+.progress-bar {
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--lila), var(--orquidea));
+}
+
+/* ===== Focus Time ===== */
+.tiempo-focus {
+  font-family: var(--fuente-titulos);
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 3rem;
+}
+
+/* ===== Foco visible con teclado ===== */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--primario);
+  outline-offset: 2px;
+}

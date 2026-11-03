@@ -1,27 +1,411 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planificador de Tareas</title>
-    <!-- Bootstrap 5.3.8 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Planificador personal</title>
+
+  <!-- Bootstrap 5.3.8 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <!-- Íconos de Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- Tipografías: Poppins (títulos) e Inter (texto) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap"
-        rel="stylesheet">
-    <!-- Estilos propios -->
-    <link rel="stylesheet" href="styles.css">
+  <!-- Íconos de Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Tipografías: Poppins (títulos) e Inter (texto) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
+<div class="app d-lg-flex">
+
+  <!-- ========== BARRA LATERAL (en pantallas pequeñas se abre como menú) ========== -->
+  <aside class="offcanvas-lg offcanvas-start sidebar" tabindex="-1" id="menuLateral" aria-labelledby="menuTitulo">
+    <div class="offcanvas-header d-lg-none">
+      <span class="logo-texto" id="menuTitulo">Planificador de tareas</span>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#menuLateral" aria-label="Cerrar menú"></button>
+    </div>
+
+    <div class="offcanvas-body flex-column p-3 p-lg-4">
+      <div class="logo d-none d-lg-flex align-items-center gap-2 mb-4">
+        <img src="assets/img/LogoPlanificador.PNG" alt="Logo de Planificador personal" class="logo-img">
+        <span class="logo-texto">Planificador de Tareas</span>
+      </div>
+
+      <nav aria-label="Principal">
+        <ul class="nav flex-column gap-1">
+          <li><a class="nav-link active" href="#" aria-current="page"><i class="bi bi-grid" aria-hidden="true"></i> Dashboard</a></li>
+          <li><a class="nav-link" href="#"><i class="bi bi-check2-square" aria-hidden="true"></i> Mis tareas</a></li>
+          <li><a class="nav-link" href="#"><i class="bi bi-calendar3" aria-hidden="true"></i> Calendario</a></li>
+          <li><a class="nav-link" href="#"><i class="bi bi-folder2" aria-hidden="true"></i> Proyectos</a></li>
+          <li><a class="nav-link" href="#"><i class="bi bi-bar-chart" aria-hidden="true"></i> Reportes</a></li>
+          <li><a class="nav-link" href="#"><i class="bi bi-gear" aria-hidden="true"></i> Configuración</a></li>
+        </ul>
+      </nav>
+
+      <a class="nav-link colapsar mt-auto d-none d-lg-flex" href="#"><i class="bi bi-chevron-left" aria-hidden="true"></i> Colapsar menú</a>
+    </div>
+  </aside>
+
+  <!-- ========== CONTENIDO PRINCIPAL ========== -->
+  <main class="contenido flex-grow-1 p-3 p-md-4">
+
+    <!-- Encabezado: buscador, notificaciones y perfil -->
+    <header class="d-flex align-items-center gap-2 gap-md-3 mb-4">
+      <button class="btn btn-icono d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral" aria-controls="menuLateral" aria-label="Abrir menú">
+        <i class="bi bi-list fs-4" aria-hidden="true"></i>
+      </button>
+
+      <form class="buscador flex-grow-1" role="search">
+        <label for="buscar" class="visually-hidden">Buscar</label>
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input id="buscar" class="form-control" type="search" placeholder="Buscar tareas, proyectos...">
+      </form>
+
+      <button class="btn btn-icono ms-auto" type="button" aria-label="Notificaciones"><i class="bi bi-bell" aria-hidden="true"></i></button>
+
+      <div class="perfil d-flex align-items-center gap-2">
+        <div class="avatar" aria-hidden="true">S</div>
+        <div class="d-none d-sm-block">
+          <div class="fw-semibold lh-sm">Soranny</div>
+          <small class="texto-suave">[Tu rol]</small>
+        </div>
+      </div>
+    </header>
+
+    <div class="row g-4">
+
+      <!-- ===== Columna central ===== -->
+      <div class="col-12 col-xl-9">
+
+        <!-- Saludo y botón Nueva tarea -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+          <div>
+            <h1 class="saludo mb-0">Buenos días, Soranny</h1>
+            <p class="texto-suave mb-0">Esto es lo que tienes pendiente hoy.</p>
+          </div>
+          <button type="button" class="btn btn-primario" data-bs-toggle="modal" data-bs-target="#modalTarea"><i class="bi bi-plus-lg" aria-hidden="true"></i> Nueva tarea</button>
+        </div>
+
+        <!-- 4 cards de resumen -->
+        <section class="row row-cols-2 row-cols-md-4 g-3 mb-4" aria-label="Resumen de tareas">
+          <div class="col">
+            <div class="card resumen resumen-total h-100">
+              <div class="card-body">
+                <span class="icono-resumen"><i class="bi bi-journal-text" aria-hidden="true"></i></span>
+                <p class="numero mb-0">24</p>
+                <p class="texto-suave fw-medium mb-0">Total de tareas</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card resumen resumen-completadas h-100">
+              <div class="card-body">
+                <span class="icono-resumen"><i class="bi bi-check-circle" aria-hidden="true"></i></span>
+                <p class="numero mb-0">10</p>
+                <p class="texto-suave fw-medium mb-0">Completadas</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card resumen resumen-progreso h-100">
+              <div class="card-body">
+                <span class="icono-resumen"><i class="bi bi-clock" aria-hidden="true"></i></span>
+                <p class="numero mb-0">6</p>
+                <p class="texto-suave fw-medium mb-0">En progreso</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card resumen resumen-porhacer h-100">
+              <div class="card-body">
+                <span class="icono-resumen"><i class="bi bi-flag" aria-hidden="true"></i></span>
+                <p class="numero mb-0">8</p>
+                <p class="texto-suave fw-medium mb-0">Por hacer</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Lista de tareas: contenedor de Tarjetas de Tarea (ejemplo estático; el JS vendrá después) -->
+        <section class="card mb-4" aria-labelledby="titulo-tareas">
+          <div class="card-body">
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+              <h2 class="titulo-seccion me-auto mb-0" id="titulo-tareas">Mis tareas</h2>
+              <button type="button" class="btn btn-borde"><i class="bi bi-funnel" aria-hidden="true"></i> Filtrar</button>
+              <button type="button" class="btn btn-borde">Ordenar por: Fecha</button>
+            </div>
+
+            <!-- Filtros por estado -->
+            <ul class="nav nav-pills filtros mb-3" aria-label="Filtrar tareas por estado">
+              <li class="nav-item"><button class="nav-link active" type="button" aria-current="true">Todas</button></li>
+              <li class="nav-item"><button class="nav-link" type="button">Por hacer</button></li>
+              <li class="nav-item"><button class="nav-link" type="button">En progreso</button></li>
+              <li class="nav-item"><button class="nav-link" type="button">Cerrado</button></li>
+            </ul>
+
+            <div class="row row-cols-1 row-cols-md-2 g-3" id="lista-tareas">
+          <div class="col">
+            <article class="card tarjeta-tarea h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+                  <span class="estado estado-porhacer"><i class="bi bi-flag" aria-hidden="true"></i> Por hacer</span>
+                  <button type="button" class="btn btn-icono btn-icono-sm" aria-label="Más opciones: Landing page"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button>
+                </div>
+                <h3 class="titulo-pequeno tarea-titulo">Landing page</h3>
+                <p class="texto-suave mb-3">Maquetar la página de inicio con Bootstrap, con sección principal, servicios y contacto.</p>
+                <div class="mt-auto d-flex flex-wrap align-items-center gap-2">
+                  <span class="etiqueta etiqueta-website">Website</span>
+                  <span class="prioridad prio-alta">Alta</span>
+                  <span class="tarea-fecha ms-auto"><i class="bi bi-calendar3" aria-hidden="true"></i> Entrega: 6 nov</span>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="col">
+            <article class="card tarjeta-tarea h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+                  <span class="estado estado-porhacer"><i class="bi bi-flag" aria-hidden="true"></i> Por hacer</span>
+                  <button type="button" class="btn btn-icono btn-icono-sm" aria-label="Más opciones: Guía de estilos"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button>
+                </div>
+                <h3 class="titulo-pequeno tarea-titulo">Guía de estilos</h3>
+                <p class="texto-suave mb-3">Definir paleta, tipografías y reglas de uso del logotipo en un documento breve.</p>
+                <div class="mt-auto d-flex flex-wrap align-items-center gap-2">
+                  <span class="etiqueta etiqueta-branding">Branding</span>
+                  <span class="prioridad prio-baja">Baja</span>
+                  <span class="tarea-fecha ms-auto"><i class="bi bi-calendar3" aria-hidden="true"></i> Entrega: 12 nov</span>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="col">
+            <article class="card tarjeta-tarea h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+                  <span class="estado estado-progreso"><i class="bi bi-clock" aria-hidden="true"></i> En progreso</span>
+                  <button type="button" class="btn btn-icono btn-icono-sm" aria-label="Más opciones: Crear flujo de usuario"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button>
+                </div>
+                <h3 class="titulo-pequeno tarea-titulo">Crear flujo de usuario</h3>
+                <p class="texto-suave mb-3">Dibujar el recorrido de la app desde el registro hasta la primera tarea creada.</p>
+                <div class="mt-auto d-flex flex-wrap align-items-center gap-2">
+                  <span class="etiqueta etiqueta-app">App móvil</span>
+                  <span class="prioridad prio-media">Media</span>
+                  <span class="tarea-fecha ms-auto"><i class="bi bi-calendar3" aria-hidden="true"></i> Entrega: 8 nov</span>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="col">
+            <article class="card tarjeta-tarea h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+                  <span class="estado estado-progreso"><i class="bi bi-clock" aria-hidden="true"></i> En progreso</span>
+                  <button type="button" class="btn btn-icono btn-icono-sm" aria-label="Más opciones: Prototipo de la tarjeta"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button>
+                </div>
+                <h3 class="titulo-pequeno tarea-titulo">Prototipo de la tarjeta</h3>
+                <p class="texto-suave mb-3">Diseñar la tarjeta de tarea con nombre, descripción, fecha y estado.</p>
+                <div class="mt-auto d-flex flex-wrap align-items-center gap-2">
+                  <span class="etiqueta etiqueta-diseno">Diseño</span>
+                  <span class="prioridad prio-alta">Alta</span>
+                  <span class="tarea-fecha ms-auto"><i class="bi bi-calendar3" aria-hidden="true"></i> Entrega: 5 nov</span>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="col">
+            <article class="card tarjeta-tarea completada h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+                  <span class="estado estado-cerrado"><i class="bi bi-check-circle" aria-hidden="true"></i> Cerrado</span>
+                  <button type="button" class="btn btn-icono btn-icono-sm" aria-label="Más opciones: Revisar wireframes"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button>
+                </div>
+                <h3 class="titulo-pequeno tarea-titulo">Revisar wireframes</h3>
+                <p class="texto-suave mb-3">Validar la estructura de pantallas con el equipo y registrar los ajustes pedidos.</p>
+                <div class="mt-auto d-flex flex-wrap align-items-center gap-2">
+                  <span class="etiqueta etiqueta-diseno">Diseño</span>
+                  <span class="prioridad prio-media">Media</span>
+                  <span class="tarea-fecha ms-auto"><i class="bi bi-calendar3" aria-hidden="true"></i> Entrega: 28 oct</span>
+                </div>
+              </div>
+            </article>
+          </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Productividad y prioridades -->
+        <div class="row g-4">
+          <div class="col-12 col-md-6">
+            <section class="card h-100" aria-labelledby="titulo-productividad">
+              <div class="card-body">
+                <h2 class="titulo-seccion" id="titulo-productividad">Productividad</h2>
+                <p class="texto-suave small">Tareas completadas por día, desde el día 1</p>
+                <!-- Gráfico de ejemplo; luego se puede reemplazar por una librería de gráficos -->
+                <svg viewBox="0 0 400 170" class="w-100" role="img" aria-label="Gráfico de línea de productividad: sube de forma gradual durante la semana">
+                  <g stroke="#E9DDF2"><path d="M0 20H400M0 60H400M0 100H400M0 140H400"/></g>
+                  <path d="M0 120C40 105 60 112 90 84S150 92 180 62S250 70 280 42S350 52 400 28V140H0Z" fill="#C8A8E9" fill-opacity=".35"/>
+                  <path d="M0 120C40 105 60 112 90 84S150 92 180 62S250 70 280 42S350 52 400 28" fill="none" stroke="#7C5CBF" stroke-width="3" stroke-linecap="round"/>
+                  <g font-size="12" fill="#6B5C80" text-anchor="middle"><text x="10" y="162">L</text><text x="75" y="162">M</text><text x="140" y="162">M</text><text x="205" y="162">J</text><text x="270" y="162">V</text><text x="335" y="162">S</text><text x="390" y="162">D</text></g>
+                </svg>
+              </div>
+            </section>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <section class="card h-100" aria-labelledby="titulo-prioridad">
+              <div class="card-body">
+                <h2 class="titulo-seccion" id="titulo-prioridad">Tareas por prioridad</h2>
+                <div class="d-flex flex-wrap align-items-center gap-4 mt-3">
+                  <svg viewBox="0 0 42 42" width="150" height="150" role="img" aria-label="Dona de prioridades: alta 42%, media 50%, baja 8%">
+                    <g transform="rotate(-90 21 21)" fill="none" stroke-width="7">
+                      <circle cx="21" cy="21" r="15.9155" stroke="#F08A94" stroke-dasharray="41.67 58.33" stroke-dashoffset="0"/>
+                      <circle cx="21" cy="21" r="15.9155" stroke="#F5CB66" stroke-dasharray="50 50" stroke-dashoffset="-41.67"/>
+                      <circle cx="21" cy="21" r="15.9155" stroke="#7FCBA0" stroke-dasharray="8.33 91.67" stroke-dashoffset="-91.67"/>
+                    </g>
+                  </svg>
+                  <ul class="leyenda list-unstyled mb-0 flex-grow-1">
+                    <li><span class="punto punto-alta"></span> Alta <strong>10 · 42%</strong></li>
+                    <li><span class="punto punto-media"></span> Media <strong>12 · 50%</strong></li>
+                    <li><span class="punto punto-baja"></span> Baja <strong>2 · 8%</strong></li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Columna derecha: calendario, progreso y Focus Time ===== -->
+      <aside class="col-12 col-xl-3" aria-label="Calendario, progreso y enfoque">
+        <div class="row g-4">
+
+          <div class="col-12 col-md-6 col-xl-12">
+            <section class="card" aria-labelledby="titulo-calendario">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-2">
+                  <h2 class="titulo-pequeno me-auto mb-0" id="titulo-calendario">Noviembre 2026</h2>
+                  <button type="button" class="btn btn-icono" aria-label="Mes anterior"><i class="bi bi-chevron-left" aria-hidden="true"></i></button>
+                  <button type="button" class="btn btn-icono" aria-label="Mes siguiente"><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+                </div>
+                <table class="table table-borderless text-center calendario mb-0">
+                  <thead><tr><th scope="col">L</th><th scope="col">M</th><th scope="col">M</th><th scope="col">J</th><th scope="col">V</th><th scope="col">S</th><th scope="col">D</th></tr></thead>
+                  <tbody>
+                    <tr><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+                    <tr><td>2</td><td><span class="hoy" aria-current="date">3</span></td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>
+                    <tr><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr>
+                    <tr><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td></tr>
+                    <tr><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td></tr>
+                    <tr><td>30</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+          <div class="col-12 col-md-6 col-xl-12">
+            <section class="card" aria-labelledby="titulo-progreso">
+              <div class="card-body">
+                <h2 class="titulo-pequeno" id="titulo-progreso">Progreso general</h2>
+                <div class="d-flex justify-content-between mt-3 mb-1">
+                  <span class="texto-suave">Avance total</span>
+                  <strong class="porcentaje">42%</strong>
+                </div>
+                <div class="progress" role="progressbar" aria-label="Progreso general" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar progreso-42"></div>
+                </div>
+                <p class="texto-suave small mt-2 mb-0">10 de 24 tareas completadas</p>
+              </div>
+            </section>
+          </div>
+
+          <div class="col-12">
+            <section class="card text-center" aria-labelledby="titulo-focus">
+              <div class="card-body">
+                <h2 class="titulo-pequeno text-start" id="titulo-focus">Focus Time</h2>
+                <p class="tiempo-focus mt-3 mb-0">25:00</p>
+                <p class="texto-suave small mb-3">Sesión de enfoque</p>
+                <div class="d-flex justify-content-center gap-2">
+                  <button type="button" class="btn btn-primario">Iniciar</button>
+                  <button type="button" class="btn btn-borde">Reiniciar</button>
+                </div>
+              </div>
+            </section>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+  </main>
+</div>
+
+<!-- ========== VENTANA: Nueva tarea (formulario estático; las validaciones con JS son la Tarea 3) ========== -->
+<div class="modal fade" id="modalTarea" tabindex="-1" aria-labelledby="titulo-formulario" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <form action="#" method="get">
+        <div class="modal-header">
+          <h2 class="modal-title titulo-seccion" id="titulo-formulario">Nueva tarea</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <label for="nombre-tarea" class="form-label fw-medium">Nombre de la tarea</label>
+            <input id="nombre-tarea" name="nombre" type="text" class="form-control" placeholder="Ej. Landing page" required minlength="3" maxlength="60">
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="fecha-tarea" class="form-label fw-medium">Fecha de entrega</label>
+            <input id="fecha-tarea" name="fecha" type="date" class="form-control" required>
+          </div>
+          <div class="col-12">
+            <label for="descripcion-tarea" class="form-label fw-medium">Descripción</label>
+            <textarea id="descripcion-tarea" name="descripcion" class="form-control" rows="3" placeholder="¿Qué hay que hacer y cuándo se considera terminada?" required minlength="10" maxlength="200"></textarea>
+          </div>
+          <div class="col-12 col-md-4">
+            <label for="categoria-tarea" class="form-label fw-medium">Categoría</label>
+            <select id="categoria-tarea" name="categoria" class="form-select" required>
+              <option value="" selected disabled>Selecciona una opción</option>
+              <option>Website</option>
+              <option>Diseño</option>
+              <option>App móvil</option>
+              <option>Branding</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-4">
+            <label for="prioridad-tarea" class="form-label fw-medium">Prioridad</label>
+            <select id="prioridad-tarea" name="prioridad" class="form-select" required>
+              <option value="" selected disabled>Selecciona una opción</option>
+              <option>Alta</option>
+              <option>Media</option>
+              <option>Baja</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-4">
+            <label for="estado-tarea" class="form-label fw-medium">Estado</label>
+            <select id="estado-tarea" name="estado" class="form-select" required>
+              <option selected>Por hacer</option>
+              <option>En progreso</option>
+              <option>Cerrado</option>
+            </select>
+          </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-borde" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primario">Guardar tarea</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript de Bootstrap (necesario para el menú en pantallas pequeñas y la ventana Nueva tarea) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
