@@ -125,6 +125,92 @@ body {
   color: var(--texto-2);
 }
 
+/* ===== Menú lateral flotante (solo pantallas grandes) ===== */
+@media (min-width: 992px) {
+  .sidebar {
+    width: 112px;
+    background: transparent;
+    border-right: 0;
+    position: relative;
+    z-index: 20;
+  }
+
+  .sidebar .offcanvas-body {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    align-items: center;
+    overflow: visible;
+  }
+
+  .logo-img {
+    height: 44px;
+  }
+
+  .sidebar nav {
+    padding: 14px 10px;
+    border-radius: 32px;
+    background: linear-gradient(180deg, #4B3578, #2E1F47);
+    box-shadow: 0 16px 40px rgba(59, 42, 85, .35), inset 0 0 0 1px rgba(255, 255, 255, .08);
+  }
+
+  .sidebar .nav-link {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 18px;
+    color: #CDBBEB;
+  }
+
+  .sidebar .nav-link i {
+    font-size: 1.35rem;
+  }
+
+  .sidebar .nav-texto {
+    display: none;
+  }
+
+  .sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, .12);
+    color: #fff;
+  }
+
+  .sidebar .nav-link.active {
+    background: var(--primario);
+    color: #fff;
+    box-shadow: 0 0 18px rgba(200, 168, 233, .65);
+  }
+
+  .sidebar .nav-link:focus-visible {
+    outline-color: #fff;
+  }
+
+  /* Nombre de la sección al pasar el mouse o enfocar con teclado */
+  .sidebar .nav-link::after {
+    content: attr(data-label);
+    position: absolute;
+    left: calc(100% + 14px);
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: var(--texto);
+    color: #fff;
+    font-size: .75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s;
+  }
+
+  .sidebar .nav-link:hover::after,
+  .sidebar .nav-link:focus-visible::after {
+    opacity: 1;
+  }
+}
+
 /* ===== Encabezado ===== */
 .buscador {
   position: relative;
@@ -168,6 +254,11 @@ body {
 .btn-icono:hover {
   background: var(--fondo);
   color: var(--texto);
+}
+
+.btn-icono-borde {
+  border: 1px solid var(--borde);
+  background: var(--blanco);
 }
 
 header .btn-icono {
@@ -336,6 +427,58 @@ header .btn-icono {
 .form-select:focus {
   border-color: var(--primario);
   box-shadow: 0 0 0 .25rem rgba(124, 92, 191, .25);
+}
+
+/* ===== Tablero de tareas por columnas ===== */
+.columna {
+  background: var(--fondo);
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.columna-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-family: var(--fuente-titulos);
+  font-weight: 500;
+  font-size: .9375rem;
+}
+
+.contador {
+  margin-left: auto;
+  min-width: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--blanco);
+  color: var(--texto-2);
+  font-size: .75rem;
+  line-height: 24px;
+  text-align: center;
+}
+
+/* Altura fija: si hay muchas tareas, la columna se desplaza y la página no crece */
+.columna-tarjetas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.columna-tarjetas .tarjeta-tarea .card-body {
+  padding: 12px;
+}
+
+.tarjeta-tarea p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  margin-bottom: 12px;
 }
 
 /* ===== Tarjeta de Tarea y lista ===== */
@@ -530,6 +673,64 @@ header .btn-icono {
   font-weight: 700;
   font-size: 2.5rem;
   line-height: 3rem;
+}
+
+/* Reloj circular */
+.reloj {
+  position: relative;
+  width: 160px;
+  height: 160px;
+}
+
+.reloj-anillo {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.reloj-pista,
+.reloj-progreso {
+  fill: none;
+  stroke-width: 8;
+}
+
+.reloj-pista {
+  stroke: var(--borde);
+}
+
+.reloj-progreso {
+  stroke: var(--primario);
+  stroke-linecap: round;
+  stroke-dasharray: 326.7;
+  stroke-dashoffset: 0;
+}
+
+.reloj-texto {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: .6875rem;
+  color: var(--texto-2);
+}
+
+.reloj .tiempo-focus {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  color: var(--texto);
+}
+
+/* ===== Alerta flotante de confirmación ===== */
+.alerta-flotante {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1100;
+  max-width: 360px;
+  margin: 0;
+  box-shadow: 0 8px 24px rgba(59, 42, 85, .2);
 }
 
 /* ===== Foco visible con teclado ===== */

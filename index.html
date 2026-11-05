@@ -29,25 +29,24 @@
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#menuLateral" aria-label="Cerrar menú"></button>
     </div>
 
-    <div class="offcanvas-body flex-column p-3 p-lg-4">
-      <div class="logo d-none d-lg-flex align-items-center gap-2 mb-4">
+    <div class="offcanvas-body flex-column p-3 p-lg-3">
+      <div class="logo d-none d-lg-flex justify-content-center mb-4">
         <img src="assets/img/LogoPlanificador.PNG" alt="Logo de Planificador personal" class="logo-img">
-        <span class="logo-texto">Planificador de Tareas</span>
+        <span class="logo-texto d-none">Planificador de Tareas</span>
       </div>
 
       <nav aria-label="Principal">
         <ul class="nav flex-column gap-1">
-          <li><a class="nav-link active" href="#" aria-current="page"><i class="bi bi-grid" aria-hidden="true"></i> Dashboard</a></li>
-          <li><a class="nav-link" href="#"><i class="bi bi-check2-square" aria-hidden="true"></i> Mis tareas</a></li>
-          <li><a class="nav-link" href="#"><i class="bi bi-calendar3" aria-hidden="true"></i> Calendario</a></li>
-          <li><a class="nav-link" href="#"><i class="bi bi-folder2" aria-hidden="true"></i> Proyectos</a></li>
-          <li><a class="nav-link" href="#"><i class="bi bi-bar-chart" aria-hidden="true"></i> Reportes</a></li>
-          <li><a class="nav-link" href="#"><i class="bi bi-gear" aria-hidden="true"></i> Configuración</a></li>
+          <li><a class="nav-link active" href="#" aria-current="page" data-label="Dashboard"><i class="bi bi-grid" aria-hidden="true"></i> <span class="nav-texto">Dashboard</span></a></li>
+          <li><a class="nav-link" href="#" data-label="Mis tareas"><i class="bi bi-check2-square" aria-hidden="true"></i> <span class="nav-texto">Mis tareas</span></a></li>
+          <li><a class="nav-link" href="#" data-label="Calendario"><i class="bi bi-calendar3" aria-hidden="true"></i> <span class="nav-texto">Calendario</span></a></li>
+          <li><a class="nav-link" href="#" data-label="Proyectos"><i class="bi bi-folder2" aria-hidden="true"></i> <span class="nav-texto">Proyectos</span></a></li>
+          <li><a class="nav-link" href="#" data-label="Reportes"><i class="bi bi-bar-chart" aria-hidden="true"></i> <span class="nav-texto">Reportes</span></a></li>
+          <li><a class="nav-link" href="#" data-label="Configuración"><i class="bi bi-gear" aria-hidden="true"></i> <span class="nav-texto">Configuración</span></a></li>
         </ul>
       </nav>
 
-      <a class="nav-link colapsar mt-auto d-none d-lg-flex" href="#"><i class="bi bi-chevron-left" aria-hidden="true"></i> Colapsar menú</a>
-    </div>
+          </div>
   </aside>
 
   <!-- ========== CONTENIDO PRINCIPAL ========== -->
@@ -139,17 +138,12 @@
               <button type="button" class="btn btn-borde">Ordenar por: Fecha</button>
             </div>
 
-            <!-- Filtros por estado -->
-            <ul class="nav nav-pills filtros mb-3" aria-label="Filtrar tareas por estado">
-              <li class="nav-item"><button class="nav-link active" type="button" aria-current="true">Todas</button></li>
-              <li class="nav-item"><button class="nav-link" type="button">Por hacer</button></li>
-              <li class="nav-item"><button class="nav-link" type="button">En progreso</button></li>
-              <li class="nav-item"><button class="nav-link" type="button">Cerrado</button></li>
-            </ul>
-
-            <div class="row row-cols-1 row-cols-md-2 g-3" id="lista-tareas">
-          <div class="col">
-            <article class="card tarjeta-tarea h-100">
+            <div class="row g-3" id="lista-tareas">
+          <div class="col-12 col-lg-4">
+            <section class="columna columna-porhacer" aria-labelledby="col-porhacer">
+              <h3 class="columna-titulo" id="col-porhacer"><i class="bi bi-flag" aria-hidden="true"></i> Por hacer <span class="contador">2</span></h3>
+              <div class="columna-tarjetas" tabindex="0" role="region" aria-label="Tareas: Por hacer">
+                <article class="card tarjeta-tarea">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
                   <span class="estado estado-porhacer"><i class="bi bi-flag" aria-hidden="true"></i> Por hacer</span>
@@ -164,9 +158,7 @@
                 </div>
               </div>
             </article>
-          </div>
-          <div class="col">
-            <article class="card tarjeta-tarea h-100">
+                <article class="card tarjeta-tarea">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
                   <span class="estado estado-porhacer"><i class="bi bi-flag" aria-hidden="true"></i> Por hacer</span>
@@ -181,9 +173,14 @@
                 </div>
               </div>
             </article>
+              </div>
+            </section>
           </div>
-          <div class="col">
-            <article class="card tarjeta-tarea h-100">
+          <div class="col-12 col-lg-4">
+            <section class="columna columna-progreso" aria-labelledby="col-progreso">
+              <h3 class="columna-titulo" id="col-progreso"><i class="bi bi-clock" aria-hidden="true"></i> En progreso <span class="contador">2</span></h3>
+              <div class="columna-tarjetas" tabindex="0" role="region" aria-label="Tareas: En progreso">
+                <article class="card tarjeta-tarea">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
                   <span class="estado estado-progreso"><i class="bi bi-clock" aria-hidden="true"></i> En progreso</span>
@@ -198,9 +195,7 @@
                 </div>
               </div>
             </article>
-          </div>
-          <div class="col">
-            <article class="card tarjeta-tarea h-100">
+                <article class="card tarjeta-tarea">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
                   <span class="estado estado-progreso"><i class="bi bi-clock" aria-hidden="true"></i> En progreso</span>
@@ -215,9 +210,14 @@
                 </div>
               </div>
             </article>
+              </div>
+            </section>
           </div>
-          <div class="col">
-            <article class="card tarjeta-tarea completada h-100">
+          <div class="col-12 col-lg-4">
+            <section class="columna columna-cerrado" aria-labelledby="col-cerrado">
+              <h3 class="columna-titulo" id="col-cerrado"><i class="bi bi-check-circle" aria-hidden="true"></i> Cerrado <span class="contador">1</span></h3>
+              <div class="columna-tarjetas" tabindex="0" role="region" aria-label="Tareas: Cerrado">
+                <article class="card tarjeta-tarea completada">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
                   <span class="estado estado-cerrado"><i class="bi bi-check-circle" aria-hidden="true"></i> Cerrado</span>
@@ -232,6 +232,8 @@
                 </div>
               </div>
             </article>
+              </div>
+            </section>
           </div>
             </div>
           </div>
@@ -326,11 +328,19 @@
             <section class="card text-center" aria-labelledby="titulo-focus">
               <div class="card-body">
                 <h2 class="titulo-pequeno text-start" id="titulo-focus">Focus Time</h2>
-                <p class="tiempo-focus mt-3 mb-0">25:00</p>
-                <p class="texto-suave small mb-3">Sesión de enfoque</p>
-                <div class="d-flex justify-content-center gap-2">
-                  <button type="button" class="btn btn-primario">Iniciar</button>
-                  <button type="button" class="btn btn-borde">Reiniciar</button>
+                <div class="reloj mx-auto my-3">
+                  <svg class="reloj-anillo" viewBox="0 0 120 120" aria-hidden="true">
+                    <circle class="reloj-pista" cx="60" cy="60" r="52"></circle>
+                    <circle class="reloj-progreso" cx="60" cy="60" r="52"></circle>
+                  </svg>
+                  <div class="reloj-texto">
+                    <p class="tiempo-focus mb-0">25:00</p>
+                    <p class="texto-suave mb-0">Sesión de enfoque</p>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                  <button type="button" class="btn btn-primario"><i class="bi bi-play-fill" aria-hidden="true"></i> Iniciar</button>
+                  <button type="button" class="btn btn-icono btn-icono-borde" aria-label="Reiniciar temporizador"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i></button>
                 </div>
               </div>
             </section>
@@ -347,28 +357,29 @@
 <div class="modal fade" id="modalTarea" tabindex="-1" aria-labelledby="titulo-formulario" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
     <div class="modal-content">
-      <form action="#" method="get">
+      <form id="newTaskForm" action="#" method="get" novalidate>
         <div class="modal-header">
           <h2 class="modal-title titulo-seccion" id="titulo-formulario">Nueva tarea</h2>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
+          <div id="taskErrorAlert" class="alert alert-danger d-none" role="alert" aria-live="assertive"></div>
           <div class="row g-3">
           <div class="col-12 col-md-6">
-            <label for="nombre-tarea" class="form-label fw-medium">Nombre de la tarea</label>
-            <input id="nombre-tarea" name="nombre" type="text" class="form-control" placeholder="Ej. Landing page" required minlength="3" maxlength="60">
+            <label for="newTaskNameInput" class="form-label fw-medium">Nombre de la tarea</label>
+            <input id="newTaskNameInput" name="nombre" type="text" class="form-control" placeholder="Ej. Landing page" maxlength="60">
           </div>
           <div class="col-12 col-md-6">
-            <label for="fecha-tarea" class="form-label fw-medium">Fecha de entrega</label>
-            <input id="fecha-tarea" name="fecha" type="date" class="form-control" required>
+            <label for="newTaskDueDateInput" class="form-label fw-medium">Fecha de entrega</label>
+            <input id="newTaskDueDateInput" name="fecha" type="date" class="form-control">
           </div>
           <div class="col-12">
-            <label for="descripcion-tarea" class="form-label fw-medium">Descripción</label>
-            <textarea id="descripcion-tarea" name="descripcion" class="form-control" rows="3" placeholder="¿Qué hay que hacer y cuándo se considera terminada?" required minlength="10" maxlength="200"></textarea>
+            <label for="newTaskDescriptionInput" class="form-label fw-medium">Descripción</label>
+            <textarea id="newTaskDescriptionInput" name="descripcion" class="form-control" rows="3" placeholder="¿Qué hay que hacer y cuándo se considera terminada?" maxlength="200"></textarea>
           </div>
           <div class="col-12 col-md-4">
-            <label for="categoria-tarea" class="form-label fw-medium">Categoría</label>
-            <select id="categoria-tarea" name="categoria" class="form-select" required>
+            <label for="newTaskCategorySelect" class="form-label fw-medium">Categoría</label>
+            <select id="newTaskCategorySelect" name="categoria" class="form-select">
               <option value="" selected disabled>Selecciona una opción</option>
               <option>Website</option>
               <option>Diseño</option>
@@ -377,8 +388,8 @@
             </select>
           </div>
           <div class="col-12 col-md-4">
-            <label for="prioridad-tarea" class="form-label fw-medium">Prioridad</label>
-            <select id="prioridad-tarea" name="prioridad" class="form-select" required>
+            <label for="newTaskPrioritySelect" class="form-label fw-medium">Prioridad</label>
+            <select id="newTaskPrioritySelect" name="prioridad" class="form-select">
               <option value="" selected disabled>Selecciona una opción</option>
               <option>Alta</option>
               <option>Media</option>
@@ -386,11 +397,12 @@
             </select>
           </div>
           <div class="col-12 col-md-4">
-            <label for="estado-tarea" class="form-label fw-medium">Estado</label>
-            <select id="estado-tarea" name="estado" class="form-select" required>
-              <option selected>Por hacer</option>
-              <option>En progreso</option>
-              <option>Cerrado</option>
+            <label for="newTaskStatusSelect" class="form-label fw-medium">Estado</label>
+            <select id="newTaskStatusSelect" name="estado" class="form-select">
+              <option value="" selected disabled>Selecciona un estado</option>
+              <option value="Por hacer">Por hacer</option>
+              <option value="En progreso">En progreso</option>
+              <option value="Cerrado">Cerrado</option>
             </select>
           </div>
           </div>
@@ -406,6 +418,10 @@
 
 <!-- JavaScript de Bootstrap (necesario para el menú en pantallas pequeñas y la ventana Nueva tarea) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<!-- Confirmación: tarea registrada -->
+<div id="taskSuccessAlert" class="alert alert-success alerta-flotante d-none" role="status" aria-live="polite"></div>
+
+<script src="js/script.js"></script>
 </body>
 
 </html>
