@@ -6,7 +6,7 @@ Aplicación web diseñada para facilitar la organización de tareas, actividades
 
 - **Trello:** [Ver tablero del proyecto](https://trello.com/invite/b/6abd3b8b1f4d3551327f2894/ATTIb85126cc858129ecabef1be2271ea49f89E2A24A/planificador-tareas)
 - **Figma:** [Ver diseño del proyecto](https://www.figma.com/design/En7AhjZkIX5QQf7UUTJnJK/Planificador-Tareas?node-id=0-1&t=Jym8lBuYhzi46o2g-1)
-- **Demo:** [Ver demo](LINK_FIGMA)
+- **Demo:** [Ver demo](https://sorannycuesta.github.io/Planificador-Tareas/)
 
 
 
