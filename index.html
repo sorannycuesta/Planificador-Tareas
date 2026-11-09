@@ -143,7 +143,7 @@
             <section class="columna columna-porhacer" aria-labelledby="col-porhacer">
               <h3 class="columna-titulo" id="col-porhacer"><i class="bi bi-flag" aria-hidden="true"></i> Por hacer <span class="contador">2</span></h3>
               <div class="columna-tarjetas" tabindex="0" role="region" aria-label="Tareas: Por hacer">
-                <article class="card tarjeta-tarea">
+                <article data-estado-pendiente="porhacer" class="card tarjeta-tarea">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
                   <span class="estado estado-porhacer"><i class="bi bi-flag" aria-hidden="true"></i> Por hacer</span>
@@ -156,9 +156,10 @@
                   <span class="prioridad prio-alta">Alta</span>
                   <span class="tarea-fecha ms-auto"><i class="bi bi-calendar3" aria-hidden="true"></i> Entrega: 6 nov</span>
                 </div>
+                <button type="button" class="btn btn-completar mt-3" aria-pressed="false"><i class="bi bi-circle" aria-hidden="true"></i> <span class="btn-completar-texto">Marcar como completada</span></button>
               </div>
             </article>
-                <article class="card tarjeta-tarea">
+                <article data-estado-pendiente="porhacer" class="card tarjeta-tarea">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
                   <span class="estado estado-porhacer"><i class="bi bi-flag" aria-hidden="true"></i> Por hacer</span>
@@ -171,6 +172,7 @@
                   <span class="prioridad prio-baja">Baja</span>
                   <span class="tarea-fecha ms-auto"><i class="bi bi-calendar3" aria-hidden="true"></i> Entrega: 12 nov</span>
                 </div>
+                <button type="button" class="btn btn-completar mt-3" aria-pressed="false"><i class="bi bi-circle" aria-hidden="true"></i> <span class="btn-completar-texto">Marcar como completada</span></button>
               </div>
             </article>
               </div>
@@ -180,7 +182,7 @@
             <section class="columna columna-progreso" aria-labelledby="col-progreso">
               <h3 class="columna-titulo" id="col-progreso"><i class="bi bi-clock" aria-hidden="true"></i> En progreso <span class="contador">2</span></h3>
               <div class="columna-tarjetas" tabindex="0" role="region" aria-label="Tareas: En progreso">
-                <article class="card tarjeta-tarea">
+                <article data-estado-pendiente="progreso" class="card tarjeta-tarea">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
                   <span class="estado estado-progreso"><i class="bi bi-clock" aria-hidden="true"></i> En progreso</span>
@@ -193,9 +195,10 @@
                   <span class="prioridad prio-media">Media</span>
                   <span class="tarea-fecha ms-auto"><i class="bi bi-calendar3" aria-hidden="true"></i> Entrega: 8 nov</span>
                 </div>
+                <button type="button" class="btn btn-completar mt-3" aria-pressed="false"><i class="bi bi-circle" aria-hidden="true"></i> <span class="btn-completar-texto">Marcar como completada</span></button>
               </div>
             </article>
-                <article class="card tarjeta-tarea">
+                <article data-estado-pendiente="progreso" class="card tarjeta-tarea">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
                   <span class="estado estado-progreso"><i class="bi bi-clock" aria-hidden="true"></i> En progreso</span>
@@ -208,6 +211,7 @@
                   <span class="prioridad prio-alta">Alta</span>
                   <span class="tarea-fecha ms-auto"><i class="bi bi-calendar3" aria-hidden="true"></i> Entrega: 5 nov</span>
                 </div>
+                <button type="button" class="btn btn-completar mt-3" aria-pressed="false"><i class="bi bi-circle" aria-hidden="true"></i> <span class="btn-completar-texto">Marcar como completada</span></button>
               </div>
             </article>
               </div>
@@ -217,7 +221,7 @@
             <section class="columna columna-cerrado" aria-labelledby="col-cerrado">
               <h3 class="columna-titulo" id="col-cerrado"><i class="bi bi-check-circle" aria-hidden="true"></i> Cerrado <span class="contador">1</span></h3>
               <div class="columna-tarjetas" tabindex="0" role="region" aria-label="Tareas: Cerrado">
-                <article class="card tarjeta-tarea completada">
+                <article data-estado-pendiente="porhacer" class="card tarjeta-tarea completada">
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
                   <span class="estado estado-cerrado"><i class="bi bi-check-circle" aria-hidden="true"></i> Cerrado</span>
@@ -230,6 +234,7 @@
                   <span class="prioridad prio-media">Media</span>
                   <span class="tarea-fecha ms-auto"><i class="bi bi-calendar3" aria-hidden="true"></i> Entrega: 28 oct</span>
                 </div>
+                <button type="button" class="btn btn-completar mt-3" aria-pressed="true"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> <span class="btn-completar-texto">Desmarcar</span></button>
               </div>
             </article>
               </div>
@@ -421,7 +426,8 @@
 <!-- Confirmación: tarea registrada -->
 <div id="taskSuccessAlert" class="alert alert-success alerta-flotante d-none" role="status" aria-live="polite"></div>
 
-<script src="js/script.js"></script>
+<script src="js/taskManager.js"></script>
+<script src="js/index.js"></script>
 </body>
 
 </html>

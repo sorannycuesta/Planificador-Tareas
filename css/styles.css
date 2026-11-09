@@ -500,6 +500,42 @@ header .btn-icono {
   text-decoration: line-through;
 }
 
+/* Tarea completada: borde y fondo verdes suaves */
+.tarjeta-tarea {
+  transition: border-color .2s, background-color .2s;
+}
+
+.tarjeta-tarea.completada {
+  border-color: #7FCBA0;
+  background: #F4FBF7;
+}
+
+/* Botón para marcar / desmarcar */
+.btn-completar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--borde);
+  background: var(--blanco);
+  color: var(--texto);
+  font-size: .8125rem;
+  font-weight: 500;
+}
+
+.btn-completar:hover {
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+.btn-completar[aria-pressed="true"] {
+  background: #D4EEE0;
+  border-color: #7FCBA0;
+  color: #1F5E40;
+}
+
 .btn-icono-sm {
   width: 32px;
   height: 32px;

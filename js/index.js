@@ -1,3 +1,8 @@
+// ===== instancia de TaskManager =====
+// taskManager.js se carga antes que este archivo, por eso la clase ya existe aquí.
+const taskManager = new TaskManager();
+console.log(taskManager.tasks); // Debe mostrar: []
+
 // ===== validación del formulario "Nueva tarea" =====
 
 const modalElement = document.querySelector('#modalTarea');
@@ -109,4 +114,53 @@ newTaskForm.addEventListener('submit', function (event) {
 modalElement.addEventListener('hidden.bs.modal', function () {
   hideErrors();
   newTaskForm.reset();
+});
+
+// ===== Tarea 4 · Parte 2: marcar / desmarcar una tarea como completada =====
+
+// Cómo se ve el badge de estado en cada caso
+const ESTADOS = {
+  porhacer: { texto: 'Por hacer',   icono: 'bi-flag',              clase: 'estado-porhacer' },
+  progreso: { texto: 'En progreso', icono: 'bi-clock',             clase: 'estado-progreso' },
+  cerrado:  { texto: 'Completada',  icono: 'bi-check-circle-fill', clase: 'estado-cerrado' }
+};
+
+const listaTareas = document.querySelector('#lista-tareas');
+
+// Cambia el badge de la tarjeta (Por hacer, En progreso o Completada)
+function mostrarEstado(card, clave) {
+  const badge = card.querySelector('.estado');
+  const estado = ESTADOS[clave];
+  badge.className = 'estado ' + estado.clase;
+  badge.innerHTML = '<i class="bi ' + estado.icono + '" aria-hidden="true"></i> ' + estado.texto;
+}
+
+// Cambia el aspecto del botón según la tarea esté completada o no
+function actualizarBoton(boton, completada) {
+  boton.setAttribute('aria-pressed', completada);
+  boton.querySelector('i').className = completada ? 'bi bi-check-circle-fill' : 'bi bi-circle';
+  boton.querySelector('.btn-completar-texto').textContent = completada ? 'Desmarcar' : 'Marcar como completada';
+}
+
+// Interruptor (toggle): cada clic alterna entre completada y pendiente
+function toggleCompletada(card, boton) {
+  // classList.toggle agrega la clase si no está y la quita si está.
+  // Devuelve true si la clase quedó puesta.
+  const completada = card.classList.toggle('completada');
+
+  // Si queda completada mostramos "Completada";
+  // si vuelve a pendiente, recuperamos su estado anterior (guardado en data-estado-pendiente)
+  mostrarEstado(card, completada ? 'cerrado' : card.dataset.estadoPendiente);
+  actualizarBoton(boton, completada);
+
+  console.log('Tarea "' + card.querySelector('.tarea-titulo').textContent + '" completada:', completada);
+}
+
+// Un solo "oyente" en la lista: detecta el clic en cualquier botón de tarea
+listaTareas.addEventListener('click', function (event) {
+  const boton = event.target.closest('.btn-completar');
+  if (!boton) return; // el clic fue en otra cosa
+
+  const card = boton.closest('.tarjeta-tarea');
+  toggleCompletada(card, boton);
 });
