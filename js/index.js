@@ -3,6 +3,7 @@
 const taskManager = new TaskManager();
 console.log(taskManager.tasks); // Debe mostrar: []
 
+
 // ===== validación del formulario "Nueva tarea" =====
 
 const modalElement = document.querySelector('#modalTarea');
@@ -105,6 +106,17 @@ newTaskForm.addEventListener('submit', function (event) {
 
   // 4. Datos válidos: la alerta ya está oculta
   console.log('Formulario válido:', data);
+
+  // 5. Solo ahora, con datos válidos, registramos la tarea en TaskManager
+  taskManager.addTask(
+    data.name.trim(),
+    data.description.trim(),
+    data.dueDate,
+    data.status
+  );
+  console.log(taskManager.tasks);
+
+  // 6. Confirmación, formulario limpio y ventana cerrada
   showSuccess(data.name);
   newTaskForm.reset();
   bootstrap.Modal.getOrCreateInstance(modalElement).hide();
@@ -116,7 +128,7 @@ modalElement.addEventListener('hidden.bs.modal', function () {
   newTaskForm.reset();
 });
 
-// ===== Tarea 4 · Parte 2: marcar / desmarcar una tarea como completada =====
+// ===== Marcar / desmarcar una tarea como completada =====
 
 // Cómo se ve el badge de estado en cada caso
 const ESTADOS = {
@@ -144,12 +156,8 @@ function actualizarBoton(boton, completada) {
 
 // Interruptor (toggle): cada clic alterna entre completada y pendiente
 function toggleCompletada(card, boton) {
-  // classList.toggle agrega la clase si no está y la quita si está.
-  // Devuelve true si la clase quedó puesta.
   const completada = card.classList.toggle('completada');
 
-  // Si queda completada mostramos "Completada";
-  // si vuelve a pendiente, recuperamos su estado anterior (guardado en data-estado-pendiente)
   mostrarEstado(card, completada ? 'cerrado' : card.dataset.estadoPendiente);
   actualizarBoton(boton, completada);
 
