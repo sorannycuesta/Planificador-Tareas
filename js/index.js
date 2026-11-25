@@ -1,8 +1,28 @@
-// ===== instancia de TaskManager =====
+// ===== Instancia de TaskManager =====
 // taskManager.js se carga antes que este archivo, por eso la clase ya existe aquí.
 const taskManager = new TaskManager();
-console.log(taskManager.tasks); // Debe mostrar: []
 
+// ===== Tarea 6: cargar las tareas guardadas y mostrarlas =====
+
+// Tareas de ejemplo: solo se usan la PRIMERA vez, cuando todavía no hay nada guardado.
+const tareasDeEjemplo = [
+  { id: 1, name: 'Landing page', description: 'Maquetar la página de inicio con Bootstrap, con sección principal, servicios y contacto.', dueDate: '2026-12-02', status: 'PORHACER', category: 'Website', priority: 'Alta', completed: false },
+  { id: 2, name: 'Guía de estilos', description: 'Definir paleta, tipografías y reglas de uso del logotipo en un documento breve.', dueDate: '2026-12-10', status: 'PORHACER', category: 'Branding', priority: 'Baja', completed: false },
+  { id: 3, name: 'Crear flujo de usuario', description: 'Dibujar el recorrido de la app desde el registro hasta la primera tarea creada.', dueDate: '2026-11-30', status: 'ENPROGRESO', category: 'App móvil', priority: 'Media', completed: false },
+  { id: 4, name: 'Prototipo de la tarjeta', description: 'Diseñar la tarjeta de tarea con nombre, descripción, fecha y estado.', dueDate: '2026-11-28', status: 'ENPROGRESO', category: 'Diseño', priority: 'Alta', completed: false },
+  { id: 5, name: 'Revisar wireframes', description: 'Validar la estructura de pantallas con el equipo y registrar los ajustes pedidos.', dueDate: '2026-11-20', status: 'CERRADO', category: 'Diseño', priority: 'Media', completed: true }
+];
+
+// load() devuelve false si no hay nada guardado (primera visita)
+const hayTareasGuardadas = taskManager.load();
+if (!hayTareasGuardadas) {
+  taskManager.tasks = tareasDeEjemplo;
+  taskManager.currentId = tareasDeEjemplo.length; // el próximo id será el 6
+  taskManager.save();
+}
+
+console.log(taskManager.tasks);
+taskManager.render();
 
 // ===== validación del formulario "Nueva tarea" =====
 
@@ -12,6 +32,8 @@ const newTaskNameInput = document.querySelector('#newTaskNameInput');
 const newTaskDescriptionInput = document.querySelector('#newTaskDescriptionInput');
 const newTaskDueDateInput = document.querySelector('#newTaskDueDateInput');
 const newTaskStatusSelect = document.querySelector('#newTaskStatusSelect');
+const newTaskCategorySelect = document.querySelector('#newTaskCategorySelect');
+const newTaskPrioritySelect = document.querySelector('#newTaskPrioritySelect');
 const taskErrorAlert = document.querySelector('#taskErrorAlert');
 const taskSuccessAlert = document.querySelector('#taskSuccessAlert');
 let successTimer = null;
@@ -112,8 +134,12 @@ newTaskForm.addEventListener('submit', function (event) {
     data.name.trim(),
     data.description.trim(),
     data.dueDate,
-    data.status
+    data.status,
+    newTaskCategorySelect.value,
+    newTaskPrioritySelect.value
   );
+  taskManager.save();   // guardamos en localStorage
+  taskManager.render(); // dibujamos la lista con la tarea nueva
   console.log(taskManager.tasks);
 
   // 6. Confirmación, formulario limpio y ventana cerrada
@@ -128,47 +154,32 @@ modalElement.addEventListener('hidden.bs.modal', function () {
   newTaskForm.reset();
 });
 
-// ===== Marcar / desmarcar una tarea como completada =====
-
-// Cómo se ve el badge de estado en cada caso
-const ESTADOS = {
-  porhacer: { texto: 'Por hacer',   icono: 'bi-flag',              clase: 'estado-porhacer' },
-  progreso: { texto: 'En progreso', icono: 'bi-clock',             clase: 'estado-progreso' },
-  cerrado:  { texto: 'Completada',  icono: 'bi-check-circle-fill', clase: 'estado-cerrado' }
-};
+// ===== Tarea 4 · Parte 2 y Tarea 6: botones de las tarjetas =====
 
 const listaTareas = document.querySelector('#lista-tareas');
 
-// Cambia el badge de la tarjeta (Por hacer, En progreso o Completada)
-function mostrarEstado(card, clave) {
-  const badge = card.querySelector('.estado');
-  const estado = ESTADOS[clave];
-  badge.className = 'estado ' + estado.clase;
-  badge.innerHTML = '<i class="bi ' + estado.icono + '" aria-hidden="true"></i> ' + estado.texto;
-}
-
-// Cambia el aspecto del botón según la tarea esté completada o no
-function actualizarBoton(boton, completada) {
-  boton.setAttribute('aria-pressed', completada);
-  boton.querySelector('i').className = completada ? 'bi bi-check-circle-fill' : 'bi bi-circle';
-  boton.querySelector('.btn-completar-texto').textContent = completada ? 'Desmarcar' : 'Marcar como completada';
-}
-
-// Interruptor (toggle): cada clic alterna entre completada y pendiente
-function toggleCompletada(card, boton) {
-  const completada = card.classList.toggle('completada');
-
-  mostrarEstado(card, completada ? 'cerrado' : card.dataset.estadoPendiente);
-  actualizarBoton(boton, completada);
-
-  console.log('Tarea "' + card.querySelector('.tarea-titulo').textContent + '" completada:', completada);
-}
-
-// Un solo "oyente" en la lista: detecta el clic en cualquier botón de tarea
+// Un solo "oyente" en la lista: sirve para todas las tarjetas, aunque se creen después.
 listaTareas.addEventListener('click', function (event) {
-  const boton = event.target.closest('.btn-completar');
-  if (!boton) return; // el clic fue en otra cosa
+  // closest sube desde el elemento clicado hasta encontrar la tarjeta (parentTask)
+  const parentTask = event.target.closest('.tarjeta-tarea');
+  if (!parentTask) return; // el clic no fue dentro de una tarjeta
 
-  const card = boton.closest('.tarjeta-tarea');
-  toggleCompletada(card, boton);
+  // data-task-id llega como texto ("3"); lo convertimos a número para compararlo con task.id
+  const taskId = Number(parentTask.dataset.taskId);
+
+  // Botón "Completar / Desmarcar"
+  if (event.target.closest('.btn-completar')) {
+    taskManager.toggleCompleted(taskId);
+    taskManager.save();
+    taskManager.render();
+    return;
+  }
+
+  // Botón "Eliminar"
+  if (event.target.closest('.delete-button')) {
+    taskManager.deleteTask(taskId);
+    taskManager.save();
+    taskManager.render();
+    console.log('Tarea eliminada. Quedan:', taskManager.tasks);
+  }
 });

@@ -536,6 +536,34 @@ header .btn-icono {
   color: #1F5E40;
 }
 
+/* Botón Eliminar */
+.btn-eliminar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #F3C4C9;
+  background: var(--blanco);
+  color: #8F2634;
+  font-size: .8125rem;
+  font-weight: 500;
+}
+
+.btn-eliminar:hover {
+  background: #FDECEE;
+  color: #8F2634;
+}
+
+/* Mensaje cuando una columna no tiene tareas */
+.columna-vacia {
+  margin: 0;
+  padding: 24px 0;
+  text-align: center;
+  color: var(--texto-2);
+}
+
 .btn-icono-sm {
   width: 32px;
   height: 32px;
@@ -692,10 +720,6 @@ header .btn-icono {
   height: 10px;
   border-radius: 999px;
   background: var(--borde);
-}
-
-.progreso-42 {
-  width: 42%;
 }
 
 .progress-bar {
