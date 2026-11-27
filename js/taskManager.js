@@ -4,8 +4,7 @@
 const ESTADOS = {
   PORHACER:   { texto: 'Por hacer',   icono: 'bi-flag',              clase: 'estado-porhacer' },
   ENPROGRESO: { texto: 'En progreso', icono: 'bi-clock',             clase: 'estado-progreso' },
-  CERRADO:    { texto: 'Cerrado',     icono: 'bi-check-circle',      clase: 'estado-cerrado' },
-  COMPLETADA: { texto: 'Completada',  icono: 'bi-check-circle-fill', clase: 'estado-cerrado' }
+  DONE:       { texto: 'Completada',  icono: 'bi-check-circle-fill', clase: 'estado-cerrado' }
 };
 
 // Categoría -> clase de color de la etiqueta
@@ -40,42 +39,47 @@ function formatDate(dateString) {
   return date.toLocaleDateString('es', { day: 'numeric', month: 'short' }).replace('.', '');
 }
 
-// Devuelve el HTML de la tarjeta de UNA tarea.
+// Devuelve el HTML de la tarjeta de UNA tarea (Tarea 7: ahora recibe el id).
 // data-task-id guarda el id: así sabremos qué tarea es cuando hagan clic en un botón.
-function createTaskHtml(task) {
-  // Si está completada mostramos "Completada"; si no, el estado que tenga guardado
-  const estado = task.completed ? ESTADOS.COMPLETADA : (ESTADOS[task.status] || ESTADOS.PORHACER);
-  const claseCompletada = task.completed ? ' completada' : '';
-  const iconoBoton = task.completed ? 'bi-check-circle-fill' : 'bi-circle';
-  const textoBoton = task.completed ? 'Desmarcar' : 'Completar';
+function createTaskHtml(id, name, description, dueDate, status, category = '', priority = '') {
+  const estado = ESTADOS[status] || ESTADOS.PORHACER;
+  const isDone = status === 'DONE';
+  const claseCompletada = isDone ? ' completada' : '';
 
   // Categoría y prioridad son opcionales: solo se dibujan si existen
-  const etiqueta = task.category
-    ? '<span class="etiqueta ' + (CATEGORIAS[task.category] || 'etiqueta-general') + '">' + escapeHtml(task.category) + '</span>'
+  const etiqueta = category
+    ? '<span class="etiqueta ' + (CATEGORIAS[category] || 'etiqueta-general') + '">' + escapeHtml(category) + '</span>'
     : '';
-  const prioridad = task.priority
-    ? '<span class="prioridad ' + (PRIORIDADES[task.priority] || '') + '">' + escapeHtml(task.priority) + '</span>'
+  const prioridad = priority
+    ? '<span class="prioridad ' + (PRIORIDADES[priority] || '') + '">' + escapeHtml(priority) + '</span>'
     : '';
 
+  // Una tarea pendiente muestra "Mark As Done"; una tarea hecha muestra "Desmarcar"
+  const botonEstado = isDone
+    ? `<button type="button" class="undo-button btn btn-completar flex-grow-1">
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> Desmarcar
+          </button>`
+    : `<button type="button" class="done-button btn btn-completar flex-grow-1">
+            <i class="bi bi-check2-circle" aria-hidden="true"></i> Mark As Done
+          </button>`;
+
   return `
-    <article class="card tarjeta-tarea${claseCompletada}" data-task-id="${task.id}">
+    <article class="card tarjeta-tarea${claseCompletada}" data-task-id="${id}">
       <div class="card-body d-flex flex-column">
         <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
           <span class="estado ${estado.clase}"><i class="bi ${estado.icono}" aria-hidden="true"></i> ${estado.texto}</span>
-          <button type="button" class="btn btn-icono btn-icono-sm" aria-label="Más opciones: ${escapeHtml(task.name)}"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button>
+          <button type="button" class="btn btn-icono btn-icono-sm" aria-label="Más opciones: ${escapeHtml(name)}"><i class="bi bi-three-dots-vertical" aria-hidden="true"></i></button>
         </div>
-        <h3 class="titulo-pequeno tarea-titulo">${escapeHtml(task.name)}</h3>
-        <p class="texto-suave mb-3">${escapeHtml(task.description)}</p>
+        <h3 class="titulo-pequeno tarea-titulo">${escapeHtml(name)}</h3>
+        <p class="texto-suave mb-3">${escapeHtml(description)}</p>
         <div class="mt-auto d-flex flex-wrap align-items-center gap-2">
           ${etiqueta}
           ${prioridad}
-          <span class="tarea-fecha ms-auto"><i class="bi bi-calendar3" aria-hidden="true"></i> Entrega: ${formatDate(task.dueDate)}</span>
+          <span class="tarea-fecha ms-auto"><i class="bi bi-calendar3" aria-hidden="true"></i> Entrega: ${formatDate(dueDate)}</span>
         </div>
         <div class="d-flex gap-2 mt-3">
-          <button type="button" class="btn btn-completar flex-grow-1" aria-pressed="${task.completed}">
-            <i class="bi ${iconoBoton}" aria-hidden="true"></i> <span>${textoBoton}</span>
-          </button>
-          <button type="button" class="delete-button btn btn-eliminar" aria-label="Eliminar tarea: ${escapeHtml(task.name)}">
+          ${botonEstado}
+          <button type="button" class="delete-button btn btn-eliminar" aria-label="Eliminar tarea: ${escapeHtml(name)}">
             <i class="bi bi-trash3" aria-hidden="true"></i> Eliminar
           </button>
         </div>
@@ -106,9 +110,19 @@ class TaskManager {
       dueDate: dueDate,
       status: 'PORHACER',
       category: category,
-      priority: priority,
-      completed: false
+      priority: priority
     });
+  }
+
+  // Busca y devuelve la tarea con ese id (Tarea 7). Si no existe, devuelve undefined.
+  getTaskById(taskId) {
+    let foundTask;
+    for (let task of this.tasks) {
+      if (task.id === taskId) {
+        foundTask = task;
+      }
+    }
+    return foundTask;
   }
 
   // Elimina la tarea con ese id (Tarea 6)
@@ -121,15 +135,6 @@ class TaskManager {
       }
     }
     this.tasks = newTasks;
-  }
-
-  // Marca o desmarca una tarea como completada (Tarea 4, ahora guardada en los datos)
-  toggleCompleted(taskId) {
-    for (let task of this.tasks) {
-      if (task.id === taskId) {
-        task.completed = !task.completed; // true pasa a false y false pasa a true
-      }
-    }
   }
 
   // Guarda las tareas en el navegador (localStorage) para que no se pierdan al recargar
@@ -147,6 +152,18 @@ class TaskManager {
     try {
       this.tasks = JSON.parse(savedTasks);
       this.currentId = Number(localStorage.getItem('planificador.currentId')) || 0;
+
+      // Compatibilidad: en la versión anterior una tarea terminada se guardaba como
+      // status 'CERRADO' o con completed = true. Ahora se guarda como status 'DONE'.
+      for (let task of this.tasks) {
+        if (task.completed || task.status === 'CERRADO') {
+          if (task.status !== 'CERRADO') {
+            task.previousStatus = task.status;
+          }
+          task.status = 'DONE';
+        }
+        delete task.completed;
+      }
       return true;
     } catch (error) {
       console.log('No se pudieron leer las tareas guardadas:', error);
@@ -159,14 +176,14 @@ class TaskManager {
     const columnas = [
       { status: 'PORHACER',   lista: '#lista-porhacer', contador: '#contador-porhacer' },
       { status: 'ENPROGRESO', lista: '#lista-progreso', contador: '#contador-progreso' },
-      { status: 'CERRADO',    lista: '#lista-cerrado',  contador: '#contador-cerrado' }
+      { status: 'DONE',       lista: '#lista-cerrado',  contador: '#contador-cerrado' }
     ];
 
     for (let columna of columnas) {
       const contenedor = document.querySelector(columna.lista);
       const scroll = contenedor.scrollTop; // para no perder el desplazamiento de la columna
 
-      // filter se queda con las tareas de esta columna; map convierte cada una en su HTML
+      // filter se queda con las tareas de esta columna
       const tareasDeLaColumna = this.tasks.filter(function (task) {
         return task.status === columna.status;
       });
@@ -174,7 +191,11 @@ class TaskManager {
       if (tareasDeLaColumna.length === 0) {
         contenedor.innerHTML = '<p class="columna-vacia">No hay tareas</p>';
       } else {
-        contenedor.innerHTML = tareasDeLaColumna.map(createTaskHtml).join('');
+        // map convierte cada tarea en su HTML; a createTaskHtml le pasamos task.id
+        contenedor.innerHTML = tareasDeLaColumna.map(function (task) {
+          return createTaskHtml(task.id, task.name, task.description, task.dueDate,
+                                task.status, task.category, task.priority);
+        }).join('');
       }
 
       contenedor.scrollTop = scroll;
@@ -187,11 +208,11 @@ class TaskManager {
   // Actualiza las 4 cards de resumen y la barra de progreso
   renderSummary() {
     const total = this.tasks.length;
-    const completadas = this.tasks.filter(function (task) { return task.completed; }).length;
-    const enProgreso = this.tasks.filter(function (task) {
-      return !task.completed && task.status === 'ENPROGRESO';
-    }).length;
-    const porHacer = total - completadas - enProgreso;
+    const contar = (status) => this.tasks.filter(function (task) { return task.status === status; }).length;
+
+    const completadas = contar('DONE');
+    const enProgreso = contar('ENPROGRESO');
+    const porHacer = contar('PORHACER');
     const porcentaje = total === 0 ? 0 : Math.round((completadas / total) * 100);
 
     document.querySelector('#resumen-total').textContent = total;

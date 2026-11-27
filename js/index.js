@@ -6,11 +6,11 @@ const taskManager = new TaskManager();
 
 // Tareas de ejemplo: solo se usan la PRIMERA vez, cuando todavía no hay nada guardado.
 const tareasDeEjemplo = [
-  { id: 1, name: 'Landing page', description: 'Maquetar la página de inicio con Bootstrap, con sección principal, servicios y contacto.', dueDate: '2026-12-02', status: 'PORHACER', category: 'Website', priority: 'Alta', completed: false },
-  { id: 2, name: 'Guía de estilos', description: 'Definir paleta, tipografías y reglas de uso del logotipo en un documento breve.', dueDate: '2026-12-10', status: 'PORHACER', category: 'Branding', priority: 'Baja', completed: false },
-  { id: 3, name: 'Crear flujo de usuario', description: 'Dibujar el recorrido de la app desde el registro hasta la primera tarea creada.', dueDate: '2026-11-30', status: 'ENPROGRESO', category: 'App móvil', priority: 'Media', completed: false },
-  { id: 4, name: 'Prototipo de la tarjeta', description: 'Diseñar la tarjeta de tarea con nombre, descripción, fecha y estado.', dueDate: '2026-11-28', status: 'ENPROGRESO', category: 'Diseño', priority: 'Alta', completed: false },
-  { id: 5, name: 'Revisar wireframes', description: 'Validar la estructura de pantallas con el equipo y registrar los ajustes pedidos.', dueDate: '2026-11-20', status: 'CERRADO', category: 'Diseño', priority: 'Media', completed: true }
+  { id: 1, name: 'Landing page', description: 'Maquetar la página de inicio con Bootstrap, con sección principal, servicios y contacto.', dueDate: '2026-12-02', status: 'PORHACER', category: 'Website', priority: 'Alta' },
+  { id: 2, name: 'Guía de estilos', description: 'Definir paleta, tipografías y reglas de uso del logotipo en un documento breve.', dueDate: '2026-12-10', status: 'PORHACER', category: 'Branding', priority: 'Baja' },
+  { id: 3, name: 'Crear flujo de usuario', description: 'Dibujar el recorrido de la app desde el registro hasta la primera tarea creada.', dueDate: '2026-11-30', status: 'ENPROGRESO', category: 'App móvil', priority: 'Media' },
+  { id: 4, name: 'Prototipo de la tarjeta', description: 'Diseñar la tarjeta de tarea con nombre, descripción, fecha y estado.', dueDate: '2026-11-28', status: 'ENPROGRESO', category: 'Diseño', priority: 'Alta' },
+  { id: 5, name: 'Revisar wireframes', description: 'Validar la estructura de pantallas con el equipo y registrar los ajustes pedidos.', dueDate: '2026-11-20', status: 'DONE', previousStatus: 'PORHACER', category: 'Diseño', priority: 'Media' }
 ];
 
 // load() devuelve false si no hay nada guardado (primera visita)
@@ -154,12 +154,13 @@ modalElement.addEventListener('hidden.bs.modal', function () {
   newTaskForm.reset();
 });
 
-// ===== Tarea 4 · Parte 2 y Tarea 6: botones de las tarjetas =====
+// ===== Tarea 7 y 6: botones de las tarjetas (Mark As Done, Desmarcar y Eliminar) =====
 
-const listaTareas = document.querySelector('#lista-tareas');
+// La lista de tareas tiene id="lista-tareas" en index.html
+const tasksList = document.querySelector('#lista-tareas');
 
-// Un solo "oyente" en la lista: sirve para todas las tarjetas, aunque se creen después.
-listaTareas.addEventListener('click', function (event) {
+// UN solo EventListener en la lista sirve para todas las tarjetas, aunque se creen después.
+tasksList.addEventListener('click', (event) => {
   // closest sube desde el elemento clicado hasta encontrar la tarjeta (parentTask)
   const parentTask = event.target.closest('.tarjeta-tarea');
   if (!parentTask) return; // el clic no fue dentro de una tarjeta
@@ -167,9 +168,21 @@ listaTareas.addEventListener('click', function (event) {
   // data-task-id llega como texto ("3"); lo convertimos a número para compararlo con task.id
   const taskId = Number(parentTask.dataset.taskId);
 
-  // Botón "Completar / Desmarcar"
-  if (event.target.closest('.btn-completar')) {
-    taskManager.toggleCompleted(taskId);
+  // Botón "Mark As Done": la tarea pasa a status 'DONE'
+  if (event.target.closest('.done-button')) {
+    console.log(parentTask); // prueba: debe mostrar la tarjeta con su data-task-id
+    const task = taskManager.getTaskById(taskId);
+    task.previousStatus = task.status; // lo guardamos para poder desmarcar después
+    task.status = 'DONE';
+    taskManager.save();
+    taskManager.render();
+    return;
+  }
+
+  // Botón "Desmarcar": la tarea vuelve al estado que tenía antes
+  if (event.target.closest('.undo-button')) {
+    const task = taskManager.getTaskById(taskId);
+    task.status = task.previousStatus || 'PORHACER';
     taskManager.save();
     taskManager.render();
     return;
